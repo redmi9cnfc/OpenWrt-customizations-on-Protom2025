@@ -1,4 +1,4 @@
 config router_banner 'main'
 	option enabled '1'
-	option banner_text 'Мой Роутер'
-	option banner_color '#000000'
+	option custom_message 'Добро пожаловать!'
+	option banner_style 'info'
