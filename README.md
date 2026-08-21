@@ -1,30 +1,22 @@
 # LuCI Router Banner
 
-A standalone OpenWrt service that replaces the router-name component in LuCI with a configurable animated banner. It is **not a Proton2025 theme** and does not ship Proton2025 files.
+My experimental OpenWrt module that adds a component displaying the router's hostname to the customizable LuCI banner (it doesn't work). This is **not the Proton2025 theme**, and it does not contain any Proton2025 theme files.
 
 ## Features
 
-- custom header text
-- fallback to the normal router hostname
-- multiple visual styles
-- multiple animations
-- configurable speed and font size
-- UCI-backed configuration in `/etc/config/router_banner`
-- automatic patching of the active LuCI header template
-- backup and restore of the original template
-- designed to work with Proton2025 and fall back to common LuCI header templates
+- None so far
 
-## Install from GitHub
+## Installation from GitHub
 
-After putting this repository on GitHub:
+After hosting the repository on GitHub:
 
 ```sh
 wget -qO- https://raw.githubusercontent.com/redmi9cnfc/OpenWrt-customizations-on-Protom2025/main/install.sh | sh
 ```
 
-Then open **System → Router Banner**.
+Then navigate to **System → Router Banner**.
 
-## Manual install
+## Manual Installation
 
 ```sh
 scp -r root/* root@192.168.1.1:/
@@ -33,7 +25,7 @@ ssh root@192.168.1.1
 /etc/init.d/router-banner start
 ```
 
-## Remove
+## Uninstallation
 
 ```sh
 /etc/init.d/router-banner stop
@@ -43,4 +35,4 @@ ssh root@192.168.1.1
 
 ## Important
 
-The service modifies the currently installed LuCI header template because LuCI must load the banner JavaScript on every page. The original file is backed up under `/etc/router-banner/backups/` and is restored by `uninstall`.
+The service modifies the currently installed LuCI header template, as LuCI needs to load the banner's JavaScript code on every page. The original file is saved as a backup at `/etc/router-banner/backups/` and is restored when the `uninstall` command is run.
