@@ -1,6 +1,6 @@
 {
 	"luci-app-router-banner": {
-		"description": "Grant access to Router Banner configuration",
+		"description": "Grant access to Router Banner settings",
 		"read": {
 			"uci": [ "router_banner" ]
 		},

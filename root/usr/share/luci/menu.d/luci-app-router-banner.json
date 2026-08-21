@@ -1,13 +1,10 @@
 {
-	"admin/services/router-banner": {
+	"admin/system/router-banner": {
 		"title": "Router Banner",
 		"order": 95,
 		"action": {
 			"type": "view",
 			"path": "router-banner"
-		},
-		"depends": {
-			"acl": [ "luci-app-router-banner" ]
 		}
 	}
 }
