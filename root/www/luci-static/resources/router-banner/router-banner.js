@@ -9,6 +9,7 @@
 		window.uci.load('router_banner').then(function() {
 			var enabled = window.uci.get('router_banner', 'main', 'enabled');
 			if (enabled === '0') return;
+
 			var host = document.querySelector('.hostname');
 			if (!host) return;
 			var link = host.querySelector('a') || host;
@@ -20,6 +21,7 @@
 			var size = window.uci.get('router_banner', 'main', 'size') || '18';
 			var position = window.uci.get('router_banner', 'main', 'position') || 'left';
 			var text = custom.trim() || original;
+
 			link.textContent = text;
 			host.classList.add('router-banner', 'router-banner-style-' + style, 'router-banner-animation-' + animation);
 			host.dataset.routerBannerText = text;
@@ -27,6 +29,7 @@
 			host.style.setProperty('--router-banner-size', Math.max(12, Math.min(40, parseInt(size, 10) || 18)) + 'px');
 			host.style.setProperty('--router-banner-position', position);
 			link.setAttribute('aria-label', text);
+
 			if (animation === 'typing') {
 				link.textContent = '';
 				var index = 0;
