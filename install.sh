@@ -1,5 +1,6 @@
 #!/bin/sh
 RAW_URL="https://raw.githubusercontent.com/redmi9cnfc/OpenWrt-customizations-on-Protom2025/main"
+echo "Kit here, and this is my experimental module for OpenWrt)"
 echo "Downloading and installing files..."
 wget -qO /etc/config/router_banner "$RAW_URL/root/etc/config/router_banner"
 mkdir -p /usr/share/luci/menu.d
