@@ -19,7 +19,7 @@ A standalone OpenWrt service that replaces the router-name component in LuCI wit
 After putting this repository on GitHub:
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/USERNAME/luci-router-banner/main/install.sh | sh
+wget -qO- https://raw.githubusercontent.com/redmi9cnfc/OpenWrt-customizations-on-Protom2025/main/install.sh | sh
 ```
 
 Then open **System → Router Banner**.
