@@ -7,8 +7,11 @@
 				var enabled = data.result.enabled;
 				var text = data.result.banner_text;
 				if (enabled === '1' && text) {
-					var header = document.querySelector('header') || document.querySelector('.main-header') || document.querySelector('.brand');
-					if (header) {
+					var container = document.querySelector('.brand') || 
+					                document.querySelector('.showSide') || 
+					                document.querySelector('header .container') ||
+					                document.querySelector('header');
+					if (container) {
 						var existBanner = document.getElementById('custom-router-banner-node');
 						if (existBanner) {
 							existBanner.textContent = text;
@@ -17,16 +20,18 @@
 						var bannerNode = document.createElement('span');
 						bannerNode.id = 'custom-router-banner-node';
 						bannerNode.textContent = text;
-						bannerNode.style.display = 'inline-block';
-						bannerNode.style.marginLeft = '12px';
-						bannerNode.style.padding = '2px 8px';
-						bannerNode.style.background = 'rgba(255, 255, 255, 0.15)';
-						bannerNode.style.borderRadius = '4px';
+						bannerNode.style.display = 'inline-flex';
+						bannerNode.style.alignItems = 'center';
+						bannerNode.style.marginLeft = '10px';
+						bannerNode.style.padding = '3px 10px';
+						bannerNode.style.background = 'rgba(255, 255, 255, 0.2)';
+						bannerNode.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+						bannerNode.style.borderRadius = '6px';
 						bannerNode.style.color = '#ffffff';
-						bannerNode.style.fontSize = '13px';
-						bannerNode.style.fontWeight = 'bold';
-						bannerNode.style.verticalAlign = 'middle';
-						header.appendChild(bannerNode);
+						bannerNode.style.fontSize = '12px';
+						bannerNode.style.fontWeight = '600';
+						bannerNode.style.whiteSpace = 'nowrap';
+						container.appendChild(bannerNode);
 					}
 				}
 			})
@@ -39,4 +44,5 @@
 	} else {
 		initBanner();
 	}
+	setTimeout(initBanner, 1000);
 })();
