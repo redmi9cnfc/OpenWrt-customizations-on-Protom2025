@@ -1,4 +1,4 @@
 config router_banner 'main'
 	option enabled '1'
-	option banner_text 'OpenWrt'
-	option banner_color '#00ff00'
+	option banner_text 'Мой Роутер'
+	option banner_color '#000000'
