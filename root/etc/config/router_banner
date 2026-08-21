@@ -1,0 +1,8 @@
+config router_banner 'main'
+	option enabled '1'
+	option text ''
+	option style 'neon'
+	option animation 'glow'
+	option speed '1'
+	option size '18'
+	option position 'left'

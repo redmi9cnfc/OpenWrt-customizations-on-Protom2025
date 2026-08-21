@@ -1,0 +1,10 @@
+{
+	"admin/system/router-banner": {
+		"title": "Router Banner",
+		"order": 95,
+		"action": {
+			"type": "view",
+			"path": "router-banner"
+		}
+	}
+}

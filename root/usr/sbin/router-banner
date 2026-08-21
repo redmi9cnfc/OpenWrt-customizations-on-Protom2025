@@ -1,0 +1,93 @@
+#!/bin/sh
+
+set -eu
+
+CONF='router_banner'
+BASE='/etc/router-banner'
+BACKUP="$BASE/backups"
+MARK='<!-- LUCI-ROUTER-BANNER:BEGIN -->'
+ENDMARK='<!-- LUCI-ROUTER-BANNER:END -->'
+
+find_header() {
+	for f in \
+		/usr/share/ucode/luci/template/themes/proton2025/header.ut \
+		/usr/share/ucode/luci/template/themes/bootstrap/header.ut \
+		/usr/share/ucode/luci/template/header.ut; do
+		[ -f "$f" ] && { echo "$f"; return 0; }
+	done
+	return 1
+}
+
+cfg() { uci -q get "$CONF.main.$1" 2>/dev/null || echo "$2"; }
+
+backup_file() {
+	file="$1"
+	mkdir -p "$BACKUP"
+	name=$(echo "$file" | sed 's#^/##; s#/#__#g')
+	[ -f "$BACKUP/$name" ] || cp -p "$file" "$BACKUP/$name"
+}
+
+restore() {
+	mkdir -p "$BACKUP"
+	for b in "$BACKUP"/*; do
+		[ -f "$b" ] || continue
+		name=$(basename "$b")
+		file=$(echo "$name" | sed 's#__#/#g')
+		file="/$file"
+		cp -p "$b" "$file"
+	done
+		rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache 2>/dev/null || true
+		/etc/init.d/uhttpd reload >/dev/null 2>&1 || true
+}
+
+patch_file() {
+	file="$1"
+	backup_file "$file"
+
+	# Remove an old installation block first.
+
+tmp="${file}.router-banner.$$"
+sed "/$MARK/,/$ENDMARK/d" "$file" > "$tmp"
+
+	# Inject immediately after the existing viewport meta tag. This avoids
+	# depending on Proton's internal HTML classes except for the hostname span.
+	awk -v mark="$MARK" -v endmark="$ENDMARK" '
+	BEGIN { injected=0 }
+	{
+		print
+		if (!injected && $0 ~ /<meta name="viewport"/) {
+			print mark
+			print "<link rel=\"stylesheet\" href=\"/luci-static/resources/router-banner/router-banner.css?v=1\" />"
+			print "<script src=\"/luci-static/resources/router-banner/router-banner.js?v=1\" defer></script>"
+			print endmark
+			injected=1
+		}
+	}' "$tmp" > "$file.new"
+	mv "$file.new" "$file"
+	rm -f "$tmp"
+}
+
+apply() {
+	enabled=$(cfg enabled 1)
+	[ "$enabled" = '1' ] || return 0
+	file=$(find_header) || { echo 'No LuCI header template found' >&2; return 1; }
+	grep -qF "$MARK" "$file" || patch_file "$file"
+	rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache 2>/dev/null || true
+	/etc/init.d/uhttpd reload >/dev/null 2>&1 || true
+}
+
+status() {
+	file=$(find_header 2>/dev/null || true)
+	if [ -n "$file" ] && grep -qF "$MARK" "$file"; then
+		echo "router-banner: installed in $file"
+	else
+		echo 'router-banner: not injected'
+	fi
+}
+
+case "${1:-apply}" in
+	apply|start|reload) apply ;;
+	restore) restore ;;
+	status) status ;;
+	*) echo "Usage: router-banner {apply|restore|status}" >&2; exit 1 ;;
+esac
